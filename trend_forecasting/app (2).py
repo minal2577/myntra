@@ -79,6 +79,21 @@ def main():
         predicted_class = predict_from_image_url(image_url)
         st.write(f"Predicted class: {predicted_class}")
 
+    # Upload Image
+    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
+    if uploaded_file is not None:
+        img = Image.open(uploaded_file).convert('L')
+        st.image(img, caption='Uploaded Image', use_column_width=True)
+        st.write("")
+        st.write("Classifying...")
+        img = img.resize((28, 28))
+        img_array = np.array(img).reshape((1, 28, 28, 1)).astype('float32') / 255
+        predictions = loaded_model.predict(img_array)
+        class_index = np.argmax(predictions)
+        class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 
+                       'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
+        st.write(f"Prediction: {class_names[class_index]}")
+  
     # Display Forecast DataFrame
     st.header("Sales Trend Forecasting")
     st.write(trend_df)
