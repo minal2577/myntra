@@ -1,0 +1,55 @@
+/* static/css/styles.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+header {
+  background-color: #4caf50;
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+.container {
+  padding: 20px;
+}
+
+.outfit-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.outfit-item {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 200px;
+}
+
+.outfit-item img {
+  width: 100%;
+}
+
+.outfit-item .details {
+  padding: 15px;
+  text-align: center;
+}
+
+.outfit-item .details button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}

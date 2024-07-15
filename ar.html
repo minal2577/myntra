@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AR Dress Visualization</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <style>
+      /* Style for button to ensure visibility */
+      .feedback-button {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 999; /* Ensure button is above AR elements if necessary */
+      }
+
+      /* Style for feedback form */
+      #feedback-form {
+        position: absolute;
+        top: 160px; /* Adjusted from 120px to 160px */
+        left: 10px;
+        font-size: 18px;
+        color: #fff;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        border-radius: 10px;
+      }
+
+      #feedback-form label {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      #feedback-form input,
+      #feedback-form textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 10px;
+      }
+
+      #feedback-form button[type="submit"] {
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      #feedback-form button[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+
+      /* Style for submission message */
+      #submission-message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px;
+        color: #fff;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        border-radius: 10px;
+        display: none; /* Hide by default */
+      }
+
+      /* Style for trend feedback */
+      #trend-feedback {
+        position: absolute;
+        top: 110px;
+        left: 10px;
+        font-size: 24px;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body style="margin: 0; overflow: hidden">
+    <!-- AR Scene -->
+    <a-scene embedded arjs>
+      <a-marker preset="hiro">
+        <a-entity id="outfit" position="0 0 0"></a-entity>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <!-- Feedback Button -->
+    <button class="feedback-button" onclick="getFeedback()">
+      Get Feedback
+    </button>
+
+    <!-- Display Feedback and Recommendation -->
+    <div
+      id="feedback"
+      style="
+        position: absolute;
+        top: 50px;
+        left: 10px;
+        font-size: 24px;
+        color: #fff;
+      "
+    ></div>
+    <div
+      id="recommendation"
+      style="
+        position: absolute;
+        top: 80px;
+        left: 10px;
+        font-size: 24px;
+        color: #fff;
+      "
+    ></div>
+    <div
+      id="trend-feedback"
+      style="
+        position: absolute;
+        top: 110px;
+        left: 10px;
+        font-size: 24px;
+        color: #fff;
+      "
+    ></div>
+
+    <!-- Feedback Form -->
+    <form id="feedback-form">
+      <label for="adjustments">What adjustments would you like to make?</label>
+      <textarea
+        id="adjustments"
+        name="adjustments"
+        placeholder="e.g. shorten sleeves, change color, etc."
+      ></textarea>
+
+      <label for="length">Length:</label>
+      <input
+        type="number"
+        id="length"
+        name="length"
+        placeholder="e.g. 2 inches shorter"
+      />
+
+      <label for="color">Color:</label>
+      <input type="color" id="color" name="color" />
+
+      <label for="other-changes">Other changes:</label>
+      <input
+        type="text"
+        id="other-changes"
+        name="other-changes"
+        placeholder="e.g. add pockets, change fabric, etc."
+      />
+
+      <button type="submit">Submit Feedback</button>
+    </form>
+
+    <!-- Submission Message -->
+    <div id="submission-message">Thank you for submitting your feedback!</div>
+
+    <!-- JavaScript -->
+    <script>
+      // Function to load outfit model into AR scene
+      function loadOutfitModel(outfitModel) {
+        const outfitEntity = document.getElementById("outfit");
+        outfitEntity.setAttribute("gltf-model", outfitModel);
+        outfitEntity.setAttribute("scale", "1 1 1");
+      }
+
+      // Get the outfit model URL from URLparameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const outfitModel = urlParams.get("outfit");
+
+      // Load outfit model if URL parameter is provided
+      if (outfitModel) {
+        loadOutfitModel(outfitModel);
+      }
+
+      // Function to generate feedback and recommendation
+      function getFeedback() {
+        // Simulate feedback generation (replace with actual logic)
+        const isLookingGood = Math.random() >= 0.5; // Example: 50% chance of looking good
+        const trend = Math.random() >= 0.5 ? "trendy" : "not trendy"; // Example: 50% chance of being trendy
+
+        // Display feedback message
+        let feedbackMessage;
+        if (isLookingGood) {
+          feedbackMessage = "You're looking great!";
+        } else {
+          feedbackMessage = "Could be better.";
+        }
+        document.getElementById("feedback").innerText = feedbackMessage;
+
+        // Display trend feedback
+        document.getElementById(
+          "trend-feedback"
+        ).innerText = `This outfit is ${trend}.`;
+
+        // Provide recommendation based on analysis
+        let recommendation;
+        if (isLookingGood) {
+          recommendation = "You're doing great! Keep it up!";
+        } else {
+          recommendation = "Try a different outfit for a better look!";
+        }
+        document.getElementById("recommendation").innerText = recommendation;
+      }
+
+      // Function to handle feedback form submission
+      document
+        .getElementById("feedback-form")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
+
+          // Get feedback form data
+          const adjustments = document.getElementById("adjustments").value;
+          const length = document.getElementById("length").value;
+          const color = document.getElementById("color").value;
+          const otherChanges = document.getElementById("other-changes").value;
+
+          // Process feedback form data (e.g. send to server, update outfit model, etc.)
+          console.log(
+            "Feedback form submitted:",
+            adjustments,
+            length,
+            color,
+            otherChanges
+          );
+
+          // Display submission message
+          document.getElementById("submission-message").style.display = "block";
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+<!-- templates/outfits.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Outfits</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>Our Outfits</h1>
+    </header>
+    <div class="container outfit-gallery">
+      <div class="outfit-item">
+        <img
+          src="{{ url_for('static', filename='images/outfit1.jpg') }}"
+          alt="Outfit 1"
+        />
+        <div class="details">
+          <h2>Outfit 1</h2>
+          <a
+            href="/ar?outfit={{ url_for('static', filename='models/outfit1.glb') }}"
+            ><button>Try in AR</button></a
+          >
+        </div>
+      </div>
+      <div class="outfit-item">
+        <img
+          src="{{ url_for('static', filename='images/outfit2.jpg') }}"
+          alt="Outfit 2"
+        />
+        <div class="details">
+          <h2>Outfit 2</h2>
+          <a
+            href="/ar?outfit={{ url_for('static', filename='models/outfit2.glb') }}"
+            ><button>Try in AR</button></a
+          >
+        </div>
+      </div>
+      <!-- Add more outfits as needed -->
+    </div>
+  </body>
+</html>
